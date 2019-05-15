@@ -24,7 +24,7 @@ import com.project.webapp.service.AppUserService;
 @RestController
 @RequestMapping("/appuser")
 public class AppUserController {
-	//ovo je komentar
+	//this is a comment
 	@Autowired
 	AppUserService appUserService;
 	
