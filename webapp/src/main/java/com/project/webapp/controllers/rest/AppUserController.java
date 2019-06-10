@@ -24,7 +24,8 @@ import com.project.webapp.service.AppUserService;
 @RestController
 @RequestMapping("/appuser")
 public class AppUserController {
-	//trying to see what will happen if I randomly write a big amount of text here.
+	//trying 
+	//########################
 	@Autowired
 	AppUserService appUserService;
 	
@@ -62,7 +63,6 @@ public class AppUserController {
 	@PreAuthorize("hasAuthority('ADMIN')")
 	@PostMapping("/invite") 
 	public ResponseEntity<AppUserDto> inviteCompanyAdmin(@RequestBody InviteDTO invite){
-		System.out.println("ADMIN admin admin admin ");
 		AppUserDto response = appUserService.inviteCompanyAdmin(invite);
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}

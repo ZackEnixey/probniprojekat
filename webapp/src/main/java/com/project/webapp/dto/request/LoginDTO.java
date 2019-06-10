@@ -16,5 +16,11 @@ public class LoginDTO {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	public LoginDTO(String email, String password) {
+		super();
+		this.email = email;
+		this.password = password;
+	}
+	public LoginDTO() {}
 }
 	

@@ -28,6 +28,15 @@ public class CourierServiceDto {
 		this.price = price;
 		this.isDeleted = isDeleted;
 	}
+	
+	public CourierServiceDto( String name, String priceUrl, int price, boolean isDeleted) {
+		super();
+		this.name = name;
+		this.pictureUrl = priceUrl;
+		this.price = price;
+		this.isDeleted = isDeleted;
+	}
+
 
 	public int getIdCourierService() {
 		return idCourierService;

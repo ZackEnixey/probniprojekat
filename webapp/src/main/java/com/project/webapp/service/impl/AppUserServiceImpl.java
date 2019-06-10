@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.webapp.dto.request.ChangePassDTO;
 import com.project.webapp.dto.request.InviteDTO;
+import com.project.webapp.dto.request.LoginDTO;
 import com.project.webapp.dto.response.AppUserDto;
 import com.project.webapp.enums.RoleEnum;
 import com.project.webapp.model.AppUser;
@@ -165,6 +166,46 @@ public class AppUserServiceImpl implements AppUserService {
 		appUserRepository.save(appUser);
 		appUser.setRegisterToken(null);
 		appUserRepository.save(appUser);
+		return new AppUserDto(appUser);
+	}
+
+	@Override
+	public AppUserDto signUp(LoginDTO user) {
+		AppUser appUser = appUserRepository.findByEmail(user.getEmail());
+		if(appUser != null) {
+			throw new WebShopException(HttpStatus.BAD_REQUEST, "Email already exists!");
+		}
+		appUser = new AppUser();
+		appUser.setEmail(user.getEmail());
+		appUser.setName(user.getPassword());
+		appUser.setPass(SecurityConfiguration.passwordEncoder().encode(user.getPassword()));
+		
+		String token = TokenUtil.generateToken();		
+		appUser.setRegisterToken(token);
+		
+		appUser.setComfirmed(false);
+		appUser.setPasswordChanged(true);
+		appUser.setDeleted(false);
+		
+		Role role = roleRepository.findById(RoleEnum.USER.getValue()).orElse(null);
+		appUser.setRoles(new ArrayList<Role>(Arrays.asList(role)));
+		appUserRepository.saveAndFlush(appUser);
+		
+	  try {
+            Message message = ConfigureMessage.message(user.getEmail(), "", "", "Confirm Registration");
+            Map<String, String> paramMap = new HashMap<>();
+            paramMap.put("name", user.getEmail());
+            paramMap.put("token", token);
+            paramMap.put("password", user.getPassword());
+            boolean b = ConfigureTemplate.template(message, SendEmailExample.class, "confirmRegistrationTemplate.ftl", paramMap);
+
+            if (b) {
+                System.out.print("Success");
+            }
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
 		return new AppUserDto(appUser);
 	}
 	

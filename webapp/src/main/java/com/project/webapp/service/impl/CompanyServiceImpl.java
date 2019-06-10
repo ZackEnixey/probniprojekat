@@ -54,7 +54,7 @@ public class CompanyServiceImpl implements CompanyService {
 	@Override
 	public CompanyDto deleteCompanyById(int id) {
 		Company company = companyRepository.findById(id).orElseThrow(() -> new WebShopException(HttpStatus.BAD_REQUEST, "there is no such ID"));
-		company.setDeleted(false);		
+		company.setDeleted(true);		
 		company = companyRepository.saveAndFlush(company); // logicko brisanje, is deactivated polje
 		//ne treba kompanija da se brise, ako treba onda samo logicki
 		return new CompanyDto(company);

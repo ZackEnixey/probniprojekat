@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.project.webapp.dto.request.ChangePassDTO;
 import com.project.webapp.dto.request.InviteDTO;
+import com.project.webapp.dto.request.LoginDTO;
 import com.project.webapp.dto.response.AppUserDto;
 import com.project.webapp.model.AppUser;
 
@@ -31,5 +32,7 @@ public interface AppUserService {
 	void changeTemporaryPassword(ChangePassDTO changePassDTO);
 
 	AppUserDto getAppUserByToken(String token);
+
+	AppUserDto signUp(LoginDTO user);
 
 }

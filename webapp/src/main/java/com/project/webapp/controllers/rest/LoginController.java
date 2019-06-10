@@ -2,6 +2,7 @@ package com.project.webapp.controllers.rest;
 
 import com.project.webapp.dto.request.LoggedInUserDTO;
 import com.project.webapp.dto.request.LoginDTO;
+import com.project.webapp.dto.response.AppUserDto;
 import com.project.webapp.model.AppUser;
 import com.project.webapp.security.TokenUtils;
 import com.project.webapp.service.AppUserService;
@@ -17,6 +18,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -33,7 +35,7 @@ public class LoginController {
     UserDetailsService userDetailsService;
 
     @Autowired
-    AppUserService userService;
+    AppUserService appUserService;    
 
     @Autowired
     TokenUtils tokenUtils; 
@@ -48,7 +50,7 @@ public class LoginController {
             Authentication authentication = authenticationManager.authenticate(token);
             SecurityContextHolder.getContext().setAuthentication(authentication);
             UserDetails details = userDetailsService.loadUserByUsername(user.getEmail());
-            AppUser userDb = userService.findByEmail(user.getEmail());
+            AppUser userDb = appUserService.findByEmail(user.getEmail());
             LoggedInUserDTO loggedIn = new LoggedInUserDTO(userDb.getIdAppUser(), tokenUtils.generateToken(details),details.getUsername(), userDb.getEmail(), details.getAuthorities());
             if (!userDb.isComfirmed()) {
                 throw new Exception("You must verify email in order to login!");
@@ -64,4 +66,14 @@ public class LoginController {
             return new ResponseEntity<>(ex.getMessage(),HttpStatus.BAD_REQUEST);
         }
     }
+    
+    @PostMapping(value = "/signup")
+    public ResponseEntity<LoginDTO> signUp(@RequestBody LoginDTO user) {
+    	System.out.println("LoginController username: " + user.getEmail());
+    	System.out.println("LoginController password: " + user.getPassword());  
+    	AppUserDto response = appUserService.signUp(user);
+    	return new ResponseEntity<LoginDTO>(user, HttpStatus.OK);
+    }
+    
+    
 }
