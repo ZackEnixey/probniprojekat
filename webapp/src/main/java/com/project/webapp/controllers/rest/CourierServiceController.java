@@ -56,4 +56,10 @@ public class CourierServiceController {
 		return new ResponseEntity<>(response, HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/{id}")
+	public ResponseEntity<CourierServiceDto> deleteTwoCountryById(@PathVariable int id ){
+		CourierServiceDto response = courierServiceService.deleteCountryById(id);
+		return new ResponseEntity<>(response, HttpStatus.OK);
+	}
+	
 }
