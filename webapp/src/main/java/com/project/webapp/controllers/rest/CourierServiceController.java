@@ -49,7 +49,7 @@ public class CourierServiceController {
 		CourierServiceDto response = courierServiceService.createNewCourierService(courierServiceDto);
     	return new ResponseEntity<>(response, HttpStatus.OK );
     }
-	//sssssasassdsds
+	
 	@DeleteMapping("/{id}")
 	public ResponseEntity<CourierServiceDto> deleteCountryById(@PathVariable int id ){
 		CourierServiceDto response = courierServiceService.deleteCountryById(id);
